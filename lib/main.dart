@@ -24,9 +24,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // Remove the home property
-      // home: const AuthPage(),
-      // Define initial route
       initialRoute: '/',
       routes: {
         '/login_register_page': (context) => const LoginOrRegister(),

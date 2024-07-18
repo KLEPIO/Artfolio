@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:artfolio/components/app_drawer.dart'; // Ensure this import
+import 'package:artfolio/components/app_drawer.dart'; 
 
 class HomePage extends StatelessWidget 
 {
@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget
         title: Text('Home Screen'),
         backgroundColor: Colors.grey.shade500,
       ),
-      drawer: AppDrawer(), // Ensure AppDrawer is correctly implemented
+      drawer: AppDrawer(), 
       body: GridView.count(
         crossAxisCount: 2,
         padding: EdgeInsets.all(16.0),
