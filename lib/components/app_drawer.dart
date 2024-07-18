@@ -60,11 +60,11 @@ class AppDrawer extends StatelessWidget {
                   ),
                   title: const Text("HOME"),
                   onTap: () {
-                    // // pop drawer
-                    // Navigator.pop(context);
+                    // pop drawer
+                    Navigator.pop(context);
 
-                    // // navigate to home page
-                    // Navigator.pushNamed(context, '/user_page');
+                    // navigate to home page
+                    Navigator.pushNamed(context, '/');
                   },
                 ),
               ),
@@ -79,11 +79,87 @@ class AppDrawer extends StatelessWidget {
                   ),
                   title: const Text("EXPLORE"),
                   onTap: () {
-                    // // pop drawer
-                    // Navigator.pop(context);
+                    // pop drawer
+                    Navigator.pop(context);
 
-                    // // navigate to user page
-                    // Navigator.pushNamed(context, '/user_page');
+                    // navigate to explore page
+                    Navigator.pushNamed(context, '/explore_discover');
+                  },
+                ),
+              ),
+
+              // artist profile
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.grey.shade400,
+                  ),
+                  title: const Text("ARTIST PROFILE"),
+                  onTap: () {
+                    // pop drawer
+                    Navigator.pop(context);
+
+                    // navigate to artist profile page
+                    Navigator.pushNamed(context, '/artist_profile');
+                  },
+                ),
+              ),
+
+              // artwork details
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.image,
+                    color: Colors.grey.shade400,
+                  ),
+                  title: const Text("ARTWORK DETAILS"),
+                  onTap: () {
+                    // pop drawer
+                    Navigator.pop(context);
+
+                    // navigate to artwork details page
+                    Navigator.pushNamed(context, '/artwork_details');
+                  },
+                ),
+              ),
+
+              // upload artwork
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.upload,
+                    color: Colors.grey.shade400,
+                  ),
+                  title: const Text("UPLOAD ARTWORK"),
+                  onTap: () {
+                    // pop drawer
+                    Navigator.pop(context);
+
+                    // navigate to upload artwork page
+                    Navigator.pushNamed(context, '/upload_artwork');
+                  },
+                ),
+              ),
+
+              // messages
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.message,
+                    color: Colors.grey.shade400,
+                  ),
+                  title: const Text("MESSAGES"),
+                  onTap: () {
+                    // pop drawer
+                    Navigator.pop(context);
+
+                    // navigate to messages page
+                    Navigator.pushNamed(context, '/messages');
                   },
                 ),
               ),
@@ -95,7 +171,7 @@ class AppDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 25.0, bottom: 25),
             child: ListTile(
               leading: Icon(
-                Icons.home,
+                Icons.logout,
                 color: Colors.grey.shade400,
               ),
               title: const Text("LOGOUT"),
