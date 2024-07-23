@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ArtistProfilePage extends StatelessWidget 
@@ -16,14 +17,43 @@ class ArtistProfilePage extends StatelessWidget
           children: [
             Text('Words about the author'),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                children: List.generate(4, (index) 
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('artworks')
+                    .orderBy('timestamp', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) 
                 {
-                  return Card(
-                    child: Image.network('https://via.placeholder.com/150'),
+                  if (snapshot.connectionState == ConnectionState.waiting) 
+                  {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) 
+                  {
+                    return Center(child: Text('No artworks available.'));
+                  }
+
+                  final artworks = snapshot.data!.docs;
+
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10.0,
+                      mainAxisSpacing: 10.0,
+                    ),
+                    itemCount: artworks.length,
+                    itemBuilder: (context, index) 
+                    {
+                      final artwork = artworks[index];
+                      final imageUrl = artwork['imageUrl'];
+
+                      return Card(
+                        child: Image.network(imageUrl, fit: BoxFit.cover),
+                      );
+                    },
                   );
-                }),
+                },
               ),
             ),
           ],
