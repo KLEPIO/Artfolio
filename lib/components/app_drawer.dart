@@ -79,11 +79,11 @@ class AppDrawer extends StatelessWidget {
                   ),
                   title: const Text("EXPLORE"),
                   onTap: () {
-                    // // pop drawer
-                    // Navigator.pop(context);
+                    // pop drawer
+                    Navigator.pop(context);
 
-                    // // navigate to user page
-                    // Navigator.pushNamed(context, '/user_page');
+                    // navigate to user page
+                    Navigator.pushNamed(context, '/user_page');
                   },
                 ),
               ),
