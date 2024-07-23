@@ -1,22 +1,25 @@
-import 'package:artfolio/components/app_drawer.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:artfolio/components/app_drawer.dart'; 
 
 class UserPage extends StatelessWidget 
 {
   UserPage({super.key});
 
-  // current logged in user
   final User? currentUser = FirebaseAuth.instance.currentUser;
 
-  // future for user details
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async 
   {
     return await FirebaseFirestore.instance
         .collection("Users")
         .doc(currentUser!.email)
         .get();
+  }
+
+  void _deleteArtwork(String artworkId) async 
+  {
+    await FirebaseFirestore.instance.collection('artworks').doc(artworkId).delete();
   }
 
   @override
@@ -35,21 +38,16 @@ class UserPage extends StatelessWidget
         future: getUserDetails(),
         builder: (context, snapshot) 
         {
-          // loading
           if (snapshot.connectionState == ConnectionState.waiting) 
           {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-
-          // error
+          } 
           else if (snapshot.hasError) 
           {
             return Text("Error: ${snapshot.error}");
-          }
-
-          // data
+          } 
           else if (snapshot.hasData) 
           {
             Map<String, dynamic>? user = snapshot.data!.data();
@@ -90,7 +88,9 @@ class UserPage extends StatelessWidget
                         itemBuilder: (context, index) 
                         {
                           final artwork = artworks[index];
+                          final artworkId = artwork.id;
                           final imageUrl = artwork['imageUrl'];
+                          final title = artwork['title'];
                           final details = artwork['details'];
 
                           return Card(
@@ -98,11 +98,26 @@ class UserPage extends StatelessWidget
                               children: [
                                 Image.network(imageUrl, height: 100, fit: BoxFit.cover),
                                 SizedBox(height: 10),
-                                Text(
-                                  details,
-                                  style: TextStyle(fontSize: 14),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                TextFormField(
+                                  initialValue: title,
+                                  onFieldSubmitted: (newValue) async 
+                                  {
+                                    await FirebaseFirestore.instance.collection('artworks').doc(artworkId).update({'title': newValue});
+                                  },
+                                ),
+                                TextFormField(
+                                  initialValue: details,
+                                  onFieldSubmitted: (newValue) async 
+                                  {
+                                    await FirebaseFirestore.instance.collection('artworks').doc(artworkId).update({'details': newValue});
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () 
+                                  {
+                                    _deleteArtwork(artworkId);
+                                  },
                                 ),
                               ],
                             ),

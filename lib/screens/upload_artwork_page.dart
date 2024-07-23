@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
 
 class UploadArtworkPage extends StatefulWidget 
 {
@@ -14,6 +15,7 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
 {
   File? _image;
   final ImagePicker _picker = ImagePicker();
+  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _detailsController = TextEditingController();
   bool _isLoading = false;
 
@@ -26,7 +28,7 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
       {
         _image = File(pickedFile.path);
       } 
-      else 
+        else 
       {
         print('No image selected.');
       }
@@ -35,16 +37,15 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
 
   Future<void> _uploadArtwork() async 
   {
-    if (_image == null || _detailsController.text.isEmpty) 
+    if (_image == null || _detailsController.text.isEmpty || _titleController.text.isEmpty) 
     {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please provide an image and details')),
+        SnackBar(content: Text('Please provide an image, title, and details')),
       );
       return;
     }
 
-    setState(() 
-    {
+    setState(() {
       _isLoading = true;
     });
 
@@ -56,10 +57,13 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
       await uploadTask.whenComplete(() => null);
       String imageUrl = await storageReference.getDownloadURL();
 
-      await FirebaseFirestore.instance.collection('artworks').add({
+      await FirebaseFirestore.instance.collection('artworks').add(
+      {
         'imageUrl': imageUrl,
+        'title': _titleController.text,
         'details': _detailsController.text,
         'timestamp': FieldValue.serverTimestamp(),
+        'userId': FirebaseAuth.instance.currentUser!.uid, 
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -69,17 +73,16 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
       setState(() 
       {
         _image = null;
+        _titleController.clear();
         _detailsController.clear();
       });
-    } 
-    catch (e) 
+    } catch (e) 
     {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to upload artwork')),
       );
-    } 
-    finally 
+    } finally 
     {
       setState(() 
       {
@@ -109,6 +112,14 @@ class _UploadArtworkPageState extends State<UploadArtworkPage>
                       child: Icon(Icons.add_a_photo, size: 50),
                     )
                   : Image.file(_image!, height: 200, width: double.infinity, fit: BoxFit.cover),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Title of the artwork',
+              ),
             ),
             SizedBox(height: 20),
             TextField(

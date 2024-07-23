@@ -27,7 +27,8 @@ class MyApp extends StatelessWidget
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {
+      routes: 
+      {
         '/login_register_page': (context) => const LoginOrRegister(),
         '/user_page': (context) => UserPage(),
         '/': (context) => const AuthPage(),
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget
             {
               return ArtworkDetailsPage(
                 imageUrl: args['imageUrl'],
+                title: args['title'], 
                 details: args['details'],
               );
             },

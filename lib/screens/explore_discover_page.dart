@@ -43,6 +43,7 @@ class ExploreDiscoverPage extends StatelessWidget
             {
               final artwork = artworks[index];
               final imageUrl = artwork['imageUrl'];
+              final title = artwork['title']; 
               final details = artwork['details'];
 
               return GestureDetector(
@@ -50,7 +51,7 @@ class ExploreDiscoverPage extends StatelessWidget
                   Navigator.pushNamed(
                     context,
                     '/artwork_details',
-                    arguments: {'imageUrl': imageUrl, 'details': details},
+                    arguments: {'imageUrl': imageUrl, 'title': title, 'details': details},
                   );
                 },
                 child: Card(
